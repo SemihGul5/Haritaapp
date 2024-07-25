@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/maps_fragment_list_view"
+        android:icon="@drawable/baseline_view_list_24"
+        android:title="Liste Görünümü" />
+    <item
+        android:id="@+id/maps_fragment_map_view"
+        android:icon="@drawable/baseline_map_24"
+        android:title="Harita Görünümü" />
+</menu>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/mapsFragment">
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.MapsFragment"
+        android:label="MapsFragment"
+        tools:layout="@layout/fragment_maps">
+        <action
+            android:id="@+id/action_mapsFragment_to_detayFragment"
+            app:destination="@id/detayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detayFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.DetayFragment"
+        android:label="fragment_detay"
+        tools:layout="@layout/fragment_detay" >
+        <argument
+            android:name="konum"
+            app:argType="com.abrebostudio.haritaapp.data.model.Konum"
+            app:nullable="true" />
+        <argument
+            android:name="bildiri"
+            app:argType="com.abrebostudio.haritaapp.data.model.Bildiri"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/bildirilerimFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.BildirilerimFragment"
+        android:label="fragment_bildirilerim"
+        tools:layout="@layout/fragment_bildirilerim" />
+    <fragment
+        android:id="@+id/ayarlarFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.AyarlarFragment"
+        android:label="fragment_ayarlar"
+        tools:layout="@layout/fragment_ayarlar" >
+        <action
+            android:id="@+id/action_ayarlarFragment_to_bildirilerimFragment"
+            app:destination="@id/bildirilerimFragment" />
+        <action
+            android:id="@+id/action_ayarlarFragment_to_busMapFragment"
+            app:destination="@id/parkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/parkFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.BusMapFragment"
+        android:label="fragment_bus_map"
+        tools:layout="@layout/fragment_bus_map" />
+    <fragment
+        android:id="@+id/bikeMapFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.BikeMapFragment"
+        android:label="fragment_bike_map"
+        tools:layout="@layout/fragment_bike_map" />
+    <fragment
+        android:id="@+id/duyuruFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.DuyuruFragment"
+        android:label="fragment_duyuru"
+        tools:layout="@layout/fragment_duyuru" />
+    <fragment
+        android:id="@+id/parkFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.ParkFragment"
+        android:label="fragment_park"
+        tools:layout="@layout/fragment_park" />
+</navigation>
