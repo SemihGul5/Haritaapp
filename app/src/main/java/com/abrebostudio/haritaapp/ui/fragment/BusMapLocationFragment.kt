@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import com.abrebostudio.haritaapp.R
 import com.abrebostudio.haritaapp.data.datasource.DatasourceMaps
 import com.abrebostudio.haritaapp.data.model.Datalist
+import com.abrebostudio.haritaapp.data.model.Hat
 import com.abrebostudio.haritaapp.data.model.Otobus
 import com.abrebostudio.haritaapp.databinding.FragmentBusMapLocationBinding
 import com.abrebostudio.haritaapp.ui.viewmodel.BusViewModel
@@ -36,6 +37,7 @@ class BusMapLocationFragment : Fragment(),OnMapReadyCallback {
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private lateinit var otobusList: List<Otobus>
     private lateinit var ds: DatasourceMaps
+    private var hat: Hat? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val temp:BusViewModel by viewModels()
@@ -48,9 +50,9 @@ class BusMapLocationFragment : Fragment(),OnMapReadyCallback {
         binding=FragmentBusMapLocationBinding.inflate(inflater, container, false)
 
         val bundle=BusMapLocationFragmentArgs.fromBundle(requireArguments())
-        val hat=bundle.hat
+        hat=bundle.hat
 
-        viewModel.getAllOtobusLocations(hat.SHATKODU)
+
 
 
 
@@ -74,43 +76,22 @@ class BusMapLocationFragment : Fragment(),OnMapReadyCallback {
             val sonKonum=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (sonKonum!=null){
                 val konum= LatLng(sonKonum.latitude,sonKonum.longitude)
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(konum,13f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(konum,11f))
                 mMap.isMyLocationEnabled=true
                 //mMap.mapType=GoogleMap.MAP_TYPE_SATELLITE
+                viewModel.getAllOtobusLocations(hat!!.SHATKODU)
 
-                loadVisibleMarkers()
-
-            }
-        }
-
-
-        mMap.setOnMarkerClickListener {
-            /*val bike: Datalist = viewModel.getBikeFromMarker(it,bikeList)!!
-            viewModel.bikeClicked(bike,requireContext(),binding)*/
-            false
-        }
-    }
-    @SuppressLint("SuspiciousIndentation")
-    private fun loadVisibleMarkers() {
-        binding.progressBar5.visibility=View.VISIBLE
-        val bounds = mMap.projection.visibleRegion.latLngBounds
-
-        viewModel.otobus.observe(viewLifecycleOwner) { liste ->
-            otobusList=liste
-            mMap.clear()
-            for (i in liste) {
-                val loc = LatLng(i.enlem.toDouble(),i.boylam.toDouble())
-                if (bounds.contains(loc)) {
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(loc)
-                            .title(i.hatkodu)
-
-                    )
+                viewModel.otobus.observe(viewLifecycleOwner){
+                    for (i in it){
+                        val ltglng:LatLng=LatLng(i.enlem.toDouble(),i.boylam.toDouble())
+                        mMap.addMarker(MarkerOptions().position(ltglng).title(i.hatkodu))
+                    }
                 }
+
             }
-            binding.progressBar5.visibility=View.GONE
         }
+
     }
+
 
 }
