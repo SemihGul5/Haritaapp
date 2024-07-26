@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +25,7 @@ import com.abrebostudio.haritaapp.data.datasource.DatasourceMaps
 import com.abrebostudio.haritaapp.data.model.Bildiri
 import com.abrebostudio.haritaapp.data.model.Feature
 import com.abrebostudio.haritaapp.databinding.FragmentBusMapBinding
+import com.abrebostudio.haritaapp.ui.adapter.HatAdapter
 import com.abrebostudio.haritaapp.ui.viewmodel.BusViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -49,15 +51,29 @@ class BusMapFragment : Fragment() {
         ds=DatasourceMaps()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding=FragmentBusMapBinding.inflate(inflater, container, false)
+
+
+
+        viewModel.hat.observe(viewLifecycleOwner){
+            binding.searchViewHat.setOnQueryTextListener(object :OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    val adapter=HatAdapter(requireContext(),it)
+                    binding.rvHat.adapter=adapter
+                    return true
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    val adapter=HatAdapter(requireContext(),it)
+                    binding.rvHat.adapter=adapter
+                    return true
+                }
+
+            })
+        }
+
 
         return binding.root
     }
@@ -84,9 +100,6 @@ class BusMapFragment : Fragment() {
                     Log.e("Mesaj",it.toString())
                 }
 
-
-
-
             }
         }
 
@@ -106,7 +119,6 @@ class BusMapFragment : Fragment() {
                             MarkerOptions()
                                 .position(loc)
                                 .title(feature.properties.Plaka)
-
                         )
                     }
                 }

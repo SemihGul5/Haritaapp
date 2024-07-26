@@ -24,9 +24,6 @@ class BusViewModel: ViewModel() {
     var hat=MutableLiveData<List<Hat>>()
     var otobus=MutableLiveData<List<Otobus>>()
 
-    /*fun otobusYukle(mMap:GoogleMap, context: Context, featureList:List<Feature>){
-        repository.otobusleriYukle(mMap, context, featureList)
-    }*/
     init {
         otobusYukle()
         hatUpload()
@@ -48,15 +45,6 @@ class BusViewModel: ViewModel() {
             hat.value=res
         }
     }
-    fun getBusLocations(hatKodu: String){
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                otobus.value=repository.getBusLocations(hatKodu)
-            }catch (e:Exception){
-                Log.e("Mesaj",e.message.toString())
-            }
-        }
-    }
 
     fun getAllOtobusLocations(hatKodu: String) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -67,8 +55,4 @@ class BusViewModel: ViewModel() {
             }
         }
     }
-
-
-
-
 }
