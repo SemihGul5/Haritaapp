@@ -1,5 +1,6 @@
 package com.abrebostudio.haritaapp.ui.viewmodel
 
+import android.content.Context
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.abrebostudio.haritaapp.data.repo.Repository
@@ -10,10 +11,6 @@ class AyarlarViewModel: ViewModel() {
     var list=ArrayList<String>()
 
 
-    init {
-        profilList()
-    }
-
     fun profilList():List<String>{
         list= repository.profilList()
         return list
@@ -21,8 +18,8 @@ class AyarlarViewModel: ViewModel() {
     fun iconSetup(x:String,binding: FragmentAyarlarListBinding){
         repository.iconSetup(x, binding)
     }
-    fun ayarlarCliked(x:String,it: View) {
-        repository.ayarlarCliked(x, it)
+    fun ayarlarCliked(x:String,it: View,context: Context) {
+        repository.ayarlarCliked(x, it,context)
     }
 
 }

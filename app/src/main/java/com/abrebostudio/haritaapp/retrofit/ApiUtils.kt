@@ -5,6 +5,8 @@ class ApiUtils {
         private const val BASE_URL="https://mekansal.herokuapp.com/api/"
         private const val BASE_URL_BIKE="https://api.ibb.gov.tr/ispark-bike/"
         private const val BASE_URL_DUYURU="http://10.0.2.2:5050/"
+        private const val BASE_URL_HAT="http://10.0.2.2:5051/"
+        private const val BASE_URL_OTOBUS="http://10.0.2.2:5052/"
         private const val BASE_URL_ISPARK="https://api.ibb.gov.tr/ispark/"
 
 
@@ -24,6 +26,12 @@ class ApiUtils {
         }
         fun getParkDao(): MekansalDao{
             return RetrofitClient.getClient(BASE_URL_ISPARK).create(MekansalDao::class.java)
+        }
+        fun getOtobusDao(): MekansalDao{
+            return RetrofitClient.getClient(BASE_URL_OTOBUS).create(MekansalDao::class.java)
+        }
+        fun getHatDao(): MekansalDao{
+            return RetrofitClient.getClient(BASE_URL_HAT).create(MekansalDao::class.java)
         }
 
 

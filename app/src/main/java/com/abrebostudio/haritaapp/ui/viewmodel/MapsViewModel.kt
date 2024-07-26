@@ -34,5 +34,8 @@ class MapsViewModel : ViewModel() {
     }
     fun bildiriTiklanmasi(clickedBildiri: Bildiri,it:View) = repository.bildiriTiklanmasi(clickedBildiri, it)
     fun getBildiriFromMarker(marker: Marker): Bildiri? = repository.getBildiriFromMarker(marker)
+    fun locationPermission(context: Context):Boolean {
+        return repository.locationPermission(context)
+    }
 
 }

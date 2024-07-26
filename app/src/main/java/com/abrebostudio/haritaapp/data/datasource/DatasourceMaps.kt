@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.location.LocationManager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ScrollView
@@ -21,15 +20,16 @@ import com.abrebostudio.haritaapp.data.model.Bildiri
 import com.abrebostudio.haritaapp.data.model.Datalist
 import com.abrebostudio.haritaapp.data.model.Duyuru
 import com.abrebostudio.haritaapp.data.model.FeatureCollection
+import com.abrebostudio.haritaapp.data.model.Hat
 import com.abrebostudio.haritaapp.data.model.IsPark
 import com.abrebostudio.haritaapp.data.model.Konum
+import com.abrebostudio.haritaapp.data.model.Otobus
 import com.abrebostudio.haritaapp.data.model.ParkItem
 import com.abrebostudio.haritaapp.databinding.FragmentBikeMapBinding
 import com.abrebostudio.haritaapp.databinding.FragmentParkBinding
 import com.abrebostudio.haritaapp.retrofit.ApiUtils
 import com.abrebostudio.haritaapp.retrofit.MekansalDao
 import com.abrebostudio.haritaapp.ui.fragment.MapsFragmentDirections
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -42,12 +42,13 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
 class DatasourceMaps:MekansalDao {
     var bildiriList=MutableLiveData<List<Bildiri>>()
     private var collectionBildiri= Firebase.firestore.collection("Bildiriler")
     val liste = ArrayList<Bildiri>()
     val liste2=ArrayList<Bildiri>()
-
+    var busLocations = ArrayList<Otobus>()
 
     override suspend fun busUpload(): FeatureCollection {
         return ApiUtils.getMekansalDao().busUpload()
@@ -70,6 +71,16 @@ class DatasourceMaps:MekansalDao {
     override suspend fun parkUpload(): List<IsPark> {
         return ApiUtils.getParkDao().parkUpload()
     }
+
+    override suspend fun hatUpload(): List<Hat> =
+        withContext(Dispatchers.IO){
+            return@withContext ApiUtils.getHatDao().hatUpload()
+        }
+
+    override suspend fun getAllOtobusLocations(hatKodu: String): List<Otobus> =
+        withContext(Dispatchers.IO) {
+            return@withContext ApiUtils.getOtobusDao().getAllOtobusLocations(hatKodu)
+        }
 
     fun getBikeFromMarker(marker: Marker,liste:List<Datalist>): Datalist? {
         val markerPosition = marker.position
@@ -134,7 +145,6 @@ class DatasourceMaps:MekansalDao {
             bottomSheetView.findViewById<TextView>(R.id.bottom_acik_mi).text="Açık"
         }else{
             bottomSheetView.findViewById<TextView>(R.id.bottom_acik_mi).text="Kapalı"
-
         }
         bottomSheetDialog.setContentView(bottomSheetView)
         bottomSheetDialog.show()

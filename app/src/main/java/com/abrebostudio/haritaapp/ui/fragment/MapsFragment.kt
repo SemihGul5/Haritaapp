@@ -36,7 +36,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMapClickListener {
     private lateinit var binding:FragmentMapsBinding
     private lateinit var mMap: GoogleMap
     private lateinit var locationManager: LocationManager
-    private lateinit var locationListener: LocationListener
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var latitude: Double? =null
     private var longitude: Double? =null
@@ -51,16 +50,9 @@ class MapsFragment : Fragment(), GoogleMap.OnMapClickListener {
         locationManager= requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         backPress()
         // interface tanımlarında object: kullanılmalı, javadaki new yerine object: kullanılır gibi düşün
-        locationListener= object : LocationListener {
-            override fun onLocationChanged(p0: Location) {
-            }
-        }
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (!viewModel.locationPermission(requireContext())){
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-
         }else{
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0f,locationListener)
             val sonKonum=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (sonKonum!=null){
                 val konum=LatLng(sonKonum.latitude,sonKonum.longitude)
@@ -82,8 +74,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMapClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerLauncher()
-
         val temp:MapsViewModel by viewModels()
         viewModel=temp
     }
@@ -152,18 +142,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMapClickListener {
         latitude=p0.latitude
         longitude=p0.longitude
         tiklandiMi=true
-    }
-    private fun registerLauncher(){
-        permissionLauncher=registerForActivityResult(ActivityResultContracts.RequestPermission()){ result->
-            if (result){
-                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0f,locationListener)
-                }
-            }else{
-                Toast.makeText(requireContext(),"izin verilmedi",Toast.LENGTH_SHORT).show()
-            }
-        }
-
     }
 
     private fun backPress(){

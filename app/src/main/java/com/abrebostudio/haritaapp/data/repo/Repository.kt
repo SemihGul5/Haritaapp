@@ -20,7 +20,9 @@ import com.abrebostudio.haritaapp.data.model.Datalist
 import com.abrebostudio.haritaapp.data.model.Duyuru
 import com.abrebostudio.haritaapp.data.model.Feature
 import com.abrebostudio.haritaapp.data.model.FeatureCollection
+import com.abrebostudio.haritaapp.data.model.Hat
 import com.abrebostudio.haritaapp.data.model.IsPark
+import com.abrebostudio.haritaapp.data.model.Otobus
 import com.abrebostudio.haritaapp.data.model.ParkItem
 import com.abrebostudio.haritaapp.data.model.User
 import com.abrebostudio.haritaapp.databinding.FragmentAyarlarListBinding
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.textfield.TextInputEditText
+import retrofit2.Call
 
 class Repository {
     private var datasourceDetay=DatasourceDetay()
@@ -57,11 +60,15 @@ class Repository {
     fun bildiriYukle() : MutableLiveData<List<Bildiri>> = datasourceMaps.bildiriYukle()
     fun profilList():ArrayList<String> = datasourceAyarlar.profilList()
     fun iconSetup(x:String,binding: FragmentAyarlarListBinding) = datasourceAyarlar.iconSetup(x, binding)
-    fun ayarlarCliked(x:String,it: View) = datasourceAyarlar.ayarlarCliked(x, it)
+    fun ayarlarCliked(x:String,it: View,context: Context) = datasourceAyarlar.ayarlarCliked(x, it,context)
     suspend fun busUpload(): FeatureCollection = datasourceMaps.busUpload()
     suspend fun bikeUpload(): BikeCollection = datasourceMaps.bikeUpload()
     suspend fun duyuruUpload(): List<Duyuru> = datasourceMaps.duyuruUpload()
     suspend fun parkUpload(): List<IsPark> = datasourceMaps.parkUpload()
+    suspend fun hatUpload(): List<Hat> = datasourceMaps.hatUpload()
+    //fun getAllBusLocations(hatKodu: String): Call<List<Otobus>> = datasourceMaps.getAllBusLocations(hatKodu)
+    suspend fun getAllOtobusLocations(hatKodu: String): List<Otobus> = datasourceMaps.getAllOtobusLocations(hatKodu)
+    suspend fun getBusLocations(hatKodu: String):List<Otobus> = datasourceMaps.getBusLocations(hatKodu)
     suspend fun duyuruAraUpload(kelime:String): List<Duyuru> = datasourceMaps.duyuruAraUpload(kelime)
     fun getBikeFromMarker(marker: Marker,liste:List<Datalist>): Datalist? = datasourceMaps.getBikeFromMarker(marker, liste)
     fun getParkFromMarker(marker: Marker,liste:List<IsPark>): IsPark? = datasourceMaps.getParkFromMarker(marker, liste)

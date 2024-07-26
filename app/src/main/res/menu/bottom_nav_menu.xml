@@ -5,6 +5,10 @@
         android:title="Anasayfa"
         android:icon="@drawable/baseline_home_24"/>
     <item
+        android:id="@+id/busMapFragment"
+        android:icon="@drawable/baseline_directions_bus_24"
+        android:title="Otobüs" />
+    <item
         android:id="@+id/parkFragment"
         android:icon="@drawable/baseline_local_parking_24"
         android:title="İspark" />
@@ -12,10 +16,7 @@
         android:id="@+id/bikeMapFragment"
         android:icon="@drawable/baseline_directions_bike_24"
         android:title="İsbike" />
-    <item
-        android:id="@+id/duyuruFragment"
-        android:icon="@drawable/baseline_notifications_24"
-        android:title="Duyuru" />
+
     <item
         android:id="@+id/ayarlarFragment"
         android:icon="@drawable/baseline_settings_24"

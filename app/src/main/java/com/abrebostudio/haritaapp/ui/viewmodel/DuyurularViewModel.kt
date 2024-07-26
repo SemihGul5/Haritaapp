@@ -24,14 +24,11 @@ class DuyurularViewModel:ViewModel() {
             val res=repository.duyuruUpload()
             duyuru.value=res
         }
-
     }
 
     fun araDuyuru(kelime:String){
         CoroutineScope(Dispatchers.Main).launch {
-            val res=repository.duyuruAraUpload(kelime)
-            duyuru.value=res
+            duyuru.value=repository.duyuruAraUpload(kelime)
         }
-
     }
 }

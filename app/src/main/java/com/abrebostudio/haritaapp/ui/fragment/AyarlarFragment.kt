@@ -25,10 +25,7 @@ class AyarlarFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding=FragmentAyarlarBinding.inflate(inflater, container, false)
-        val list=ArrayList<String>()
-        list.add("Bildirilerim")
-        list.add("Paylaş")
-        list.add("Çıkış Yap")
+        val list = viewModel.profilList()
         val adapter=AyarlarAdapter(requireContext(),list,viewModel)
 
         binding.rvProfil.adapter=adapter

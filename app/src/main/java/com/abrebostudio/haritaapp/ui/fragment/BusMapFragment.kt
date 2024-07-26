@@ -8,6 +8,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -64,24 +65,31 @@ class BusMapFragment : Fragment() {
     @SuppressLint("ServiceCast", "MissingPermission", "PotentialBehaviorOverride")
     private val callback = OnMapReadyCallback { googleMap ->
         mMap=googleMap
-
         locationManager= requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
+        if (!viewModel.locationPermission(requireContext())){
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }else{
             val sonKonum=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (sonKonum!=null){
                 val konum= LatLng(sonKonum.latitude,sonKonum.longitude)
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(konum,15f))
                 mMap.isMyLocationEnabled=true
-                //mMap.mapType=GoogleMap.MAP_TYPE_SATELLITE
                 mMap.setOnCameraIdleListener {
-                    loadVisibleMarkers()
+                    //loadVisibleMarkers()
                 }
+
+                viewModel.getAllOtobusLocations("76")
+                viewModel.otobus.observe(viewLifecycleOwner){
+                    Log.e("Mesaj",it.toString())
+                }
+
+
+
+
             }
         }
+
     }
     private fun loadVisibleMarkers() {
         binding.progressBar.visibility=View.VISIBLE
@@ -98,7 +106,7 @@ class BusMapFragment : Fragment() {
                             MarkerOptions()
                                 .position(loc)
                                 .title(feature.properties.Plaka)
-                                .icon(BitmapDescriptorFactory.fromBitmap(ds.generateSmallIcon(requireContext(),R.drawable.baseline_directions_bus_24_black,100,100)))
+
                         )
                     }
                 }

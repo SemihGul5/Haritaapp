@@ -42,11 +42,11 @@
             android:id="@+id/action_ayarlarFragment_to_bildirilerimFragment"
             app:destination="@id/bildirilerimFragment" />
         <action
-            android:id="@+id/action_ayarlarFragment_to_busMapFragment"
-            app:destination="@id/parkFragment" />
+            android:id="@+id/action_ayarlarFragment_to_duyuruFragment"
+            app:destination="@id/duyuruFragment" />
     </fragment>
     <fragment
-        android:id="@+id/parkFragment"
+        android:id="@+id/busMapFragment"
         android:name="com.abrebostudio.haritaapp.ui.fragment.BusMapFragment"
         android:label="fragment_bus_map"
         tools:layout="@layout/fragment_bus_map" />
@@ -65,4 +65,5 @@
         android:name="com.abrebostudio.haritaapp.ui.fragment.ParkFragment"
         android:label="fragment_park"
         tools:layout="@layout/fragment_park" />
+
 </navigation>

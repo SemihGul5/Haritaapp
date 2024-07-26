@@ -17,10 +17,10 @@ class DatasourceAyarlar() {
 
     fun profilList():ArrayList<String>{
         val list=ArrayList<String>()
-        list.add("Otobüsler")
+        list.add("Duyurular")
         list.add("Bildirilerim")
         list.add("Paylaş")
-        list.add("Çıkış yap")
+        list.add("Çıkış Yap")
 
         return list
     }
@@ -33,23 +33,23 @@ class DatasourceAyarlar() {
             binding.imageViewProfilList.setImageResource(R.drawable.baseline_share_24)
         }else if (x=="Çıkış Yap"){
             binding.imageViewProfilList.setImageResource(R.drawable.baseline_logout_24)
-        }else if (x=="Otobüsler"){
-            binding.imageViewProfilList.setImageResource(R.drawable.baseline_directions_bus_24_black)
+        }else if (x=="Duyurular"){
+            binding.imageViewProfilList.setImageResource(R.drawable.baseline_notifications_24_black)
         }
     }
 
-    fun ayarlarCliked(x:String,it: View){
+    fun ayarlarCliked(x:String,it: View,context: Context){
         if (x=="Bildirilerim"){
             Navigation.findNavController(it).navigate(R.id.action_ayarlarFragment_to_bildirilerimFragment)
 
         }else if (x=="Paylaş"){
             Snackbar.make(it,"Link Kopyalandı",Snackbar.LENGTH_SHORT).show()
         }else if (x=="Çıkış Yap"){
+            logOut(context)
 
-        }else if (x=="Otobüsler"){
-            Navigation.findNavController(it).navigate(R.id.action_ayarlarFragment_to_busMapFragment)
+        }else if (x=="Duyurular"){
+            Navigation.findNavController(it).navigate(R.id.action_ayarlarFragment_to_duyuruFragment)
         }
-
         else{
             Log.e("Mesaj","Ayarlar cliked hata")
         }
