@@ -3,9 +3,6 @@ package com.abrebostudio.haritaapp.ui.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -14,25 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView.OnQueryTextListener
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import com.abrebostudio.haritaapp.R
 import com.abrebostudio.haritaapp.data.datasource.DatasourceMaps
-import com.abrebostudio.haritaapp.data.model.Bildiri
-import com.abrebostudio.haritaapp.data.model.Feature
 import com.abrebostudio.haritaapp.databinding.FragmentBusMapBinding
 import com.abrebostudio.haritaapp.ui.adapter.HatAdapter
 import com.abrebostudio.haritaapp.ui.viewmodel.BusViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
@@ -57,22 +45,34 @@ class BusMapFragment : Fragment() {
 
 
 
-        viewModel.hat.observe(viewLifecycleOwner){
-            binding.searchViewHat.setOnQueryTextListener(object :OnQueryTextListener{
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    val adapter=HatAdapter(requireContext(),it)
-                    binding.rvHat.adapter=adapter
+        viewModel.hat.observe(viewLifecycleOwner) { hatList ->
+            val adapter = HatAdapter(requireContext(), hatList)
+            binding.rvHat.adapter = adapter
+
+            binding.searchViewHat.setOnQueryTextListener(object : OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        val filteredList = hatList.filter { hat ->
+                            hat.SHATKODU.contains(query, ignoreCase = true)
+                        }
+                        adapter.updateData(filteredList)
+                    }
                     return true
                 }
 
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    val adapter=HatAdapter(requireContext(),it)
-                    binding.rvHat.adapter=adapter
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    newText?.let {
+                        val filteredList = hatList.filter { hat ->
+                            hat.SHATKODU.contains(newText, ignoreCase = true)
+                        }
+                        adapter.updateData(filteredList)
+                    }
                     return true
                 }
-
             })
         }
+
+
 
 
         return binding.root

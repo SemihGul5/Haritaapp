@@ -49,7 +49,11 @@
         android:id="@+id/busMapFragment"
         android:name="com.abrebostudio.haritaapp.ui.fragment.BusMapFragment"
         android:label="fragment_bus_map"
-        tools:layout="@layout/fragment_bus_map" />
+        tools:layout="@layout/fragment_bus_map" >
+        <action
+            android:id="@+id/action_busMapFragment_to_busMapLocationFragment"
+            app:destination="@id/busMapLocationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bikeMapFragment"
         android:name="com.abrebostudio.haritaapp.ui.fragment.BikeMapFragment"
@@ -65,5 +69,14 @@
         android:name="com.abrebostudio.haritaapp.ui.fragment.ParkFragment"
         android:label="fragment_park"
         tools:layout="@layout/fragment_park" />
+    <fragment
+        android:id="@+id/busMapLocationFragment"
+        android:name="com.abrebostudio.haritaapp.ui.fragment.BusMapLocationFragment"
+        android:label="fragment_bus_map_location"
+        tools:layout="@layout/fragment_bus_map_location" >
+        <argument
+            android:name="hat"
+            app:argType="com.abrebostudio.haritaapp.data.model.Hat" />
+    </fragment>
 
 </navigation>
